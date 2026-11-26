@@ -1,0 +1,12 @@
+langgraph>=0.2
+langchain-core>=0.3
+scikit-learn>=1.3
+pandas>=2.0
+numpy>=1.24
+joblib>=1.3
+langchain-ollama
+python-dotenv
+# optional: persistent checkpoints so a crashed run can be resumed
+# langgraph-checkpoint-sqlite
+# plus whichever LangChain provider package you use for your LLM, e.g.
+# langchain-anthropic / langchain-openai / langchain-ollama

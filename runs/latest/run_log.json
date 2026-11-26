@@ -1,0 +1,460 @@
+{
+  "requirements": {
+    "problem_type": "classification",
+    "target": "is_canceled",
+    "algorithm": "mlp",
+    "goal": 0.9,
+    "max_tries": 5,
+    "metric": "accuracy",
+    "notes": ""
+  },
+  "history": [
+    {
+      "attempt": 1,
+      "fingerprint": "4ce8cdb93a49",
+      "feature_spec": {
+        "numeric_impute": "median",
+        "numeric_scaler": "standard",
+        "categorical_encoding": "onehot",
+        "polynomial_degree": 1,
+        "interaction_only": false,
+        "log_transform_columns": [],
+        "drop_columns": [
+          "reservation_status_date",
+          "agent",
+          "company"
+        ],
+        "variance_threshold": 0.0,
+        "select_k_best": null
+      },
+      "model_spec": {
+        "algorithm": "mlp",
+        "hyperparameters": {
+          "hidden_layer_sizes": [
+            256,
+            128,
+            64
+          ],
+          "activation": "relu",
+          "alpha": 0.0001,
+          "learning_rate_init": 0.001,
+          "max_iter": 200,
+          "early_stopping": true
+        }
+      },
+      "changes": {
+        "feature": {
+          "drop_columns": [
+            [],
+            [
+              "reservation_status_date",
+              "agent",
+              "company"
+            ]
+          ]
+        },
+        "model": {
+          "activation": [
+            null,
+            "relu"
+          ],
+          "alpha": [
+            null,
+            0.0001
+          ],
+          "early_stopping": [
+            null,
+            true
+          ],
+          "hidden_layer_sizes": [
+            null,
+            [
+              256,
+              128,
+              64
+            ]
+          ],
+          "learning_rate_init": [
+            null,
+            0.001
+          ],
+          "max_iter": [
+            null,
+            200
+          ]
+        }
+      },
+      "architecture_code": {
+        "feature": "feature_spec = {'numeric_scaler': 'standard', 'categorical_encoding': 'onehot', 'polynomial_degree': 1, 'drop_columns': ['reservation_status_date', 'agent', 'company']}",
+        "model": "MLPClassifier(hidden_layer_sizes=(256, 128, 64), activation='relu', alpha=0.0001, learning_rate_init=0.001, max_iter=200)"
+      },
+      "rationales": {
+        "feature": "Initial setup with standard scaling and one-hot encoding for categoricals, dropping high-cardinality columns and leaked column",
+        "model": "Starting with a 3-layer MLP and default hyperparameters as per the strategy notes"
+      },
+      "status": "ok",
+      "val_score": 0.8673569863864975,
+      "val_std": 0.0032603972202055144,
+      "train_score": 0.9281896463180039,
+      "gap": 0.06083265993150644,
+      "fit_time": 388.4,
+      "canary_score": 0.6295439291069507
+    },
+    {
+      "attempt": 2,
+      "fingerprint": "1c83ebab9d7d",
+      "feature_spec": {
+        "numeric_impute": "median",
+        "numeric_scaler": "standard",
+        "categorical_encoding": "onehot",
+        "polynomial_degree": 2,
+        "interaction_only": false,
+        "log_transform_columns": [
+          "lead_time",
+          "adr",
+          "total_of_special_requests"
+        ],
+        "drop_columns": [
+          "reservation_status_date",
+          "agent",
+          "company"
+        ],
+        "variance_threshold": 0.0,
+        "select_k_best": null
+      },
+      "model_spec": {
+        "algorithm": "mlp",
+        "hyperparameters": {
+          "hidden_layer_sizes": [
+            256,
+            128,
+            64
+          ],
+          "activation": "tanh",
+          "alpha": 0.0001,
+          "learning_rate_init": 0.001,
+          "max_iter": 500,
+          "early_stopping": true
+        }
+      },
+      "changes": {
+        "feature": {
+          "log_transform_columns": [
+            [],
+            [
+              "lead_time",
+              "adr",
+              "total_of_special_requests"
+            ]
+          ],
+          "polynomial_degree": [
+            1,
+            2
+          ]
+        },
+        "model": {
+          "activation": [
+            "relu",
+            "tanh"
+          ],
+          "max_iter": [
+            200,
+            500
+          ]
+        }
+      },
+      "architecture_code": {
+        "feature": "feature_spec = {'numeric_impute': 'median', 'numeric_scaler': 'standard', 'categorical_encoding': 'onehot', 'polynomial_degree': 2, 'interaction_only': False, 'log_transform_columns': ['lead_time', 'adr', 'total_of_special_requests'], 'drop_columns': ['reservation_status_date', 'agent', 'company'], 'variance_threshold': 0.0, 'select_k_best': None}",
+        "model": "MLPClassifier(hidden_layer_sizes=(256, 128, 64), activation='tanh', alpha=0.0001, learning_rate_init=0.001, max_iter=500, early_stopping=True)"
+      },
+      "rationales": {
+        "feature": "Added log transformation to skewed numeric columns and increased polynomial degree to capture more complex interactions",
+        "model": "Increased max_iter to 500 and switched activation to 'tanh' to capture non-linearities better, as per orchestrator guidance"
+      },
+      "status": "ok",
+      "val_score": 0.8679642515451658,
+      "val_std": 0.0009477249108443971,
+      "train_score": 0.9184160155722078,
+      "gap": 0.05045176402704199,
+      "fit_time": 646.83,
+      "canary_score": 0.6288738570034074
+    },
+    {
+      "attempt": 3,
+      "fingerprint": "b6fc65296314",
+      "feature_spec": {
+        "numeric_impute": "median",
+        "numeric_scaler": "standard",
+        "categorical_encoding": "onehot",
+        "polynomial_degree": 3,
+        "interaction_only": false,
+        "log_transform_columns": [
+          "lead_time",
+          "adr",
+          "total_of_special_requests"
+        ],
+        "drop_columns": [
+          "reservation_status_date",
+          "agent",
+          "company"
+        ],
+        "variance_threshold": 0.0,
+        "select_k_best": 50
+      },
+      "model_spec": {
+        "algorithm": "mlp",
+        "hyperparameters": {
+          "hidden_layer_sizes": [
+            256,
+            128,
+            64
+          ],
+          "activation": "tanh",
+          "alpha": 0.0001,
+          "learning_rate_init": 0.001,
+          "max_iter": 500,
+          "early_stopping": true
+        }
+      },
+      "changes": {
+        "feature": {
+          "polynomial_degree": [
+            2,
+            3
+          ],
+          "select_k_best": [
+            null,
+            50
+          ]
+        },
+        "model": {}
+      },
+      "architecture_code": {
+        "feature": "feature_spec = {'numeric_impute': 'median', 'numeric_scaler': 'standard', 'categorical_encoding': 'onehot', 'polynomial_degree': 3, 'interaction_only': False, 'log_transform_columns': ['lead_time','adr','total_of_special_requests'], 'drop_columns': ['reservation_status_date','agent','company'], 'variance_threshold': 0.0, 'select_k_best': 50}",
+        "model": null
+      },
+      "rationales": {
+        "feature": "Increased polynomial degree to 3 and added select_k_best to keep only the most informative features",
+        "model": "Increased hidden layer sizes and reduced alpha to improve model capacity and prevent overfitting. Also reduced learning rate and increased max iterations to allow for more precise convergence."
+      },
+      "status": "ok",
+      "val_score": 0.8165884896239411,
+      "val_std": 0.0037679218406760943,
+      "train_score": 0.8351934904062922,
+      "gap": 0.018605000782351055,
+      "fit_time": 797.97
+    },
+    {
+      "attempt": 4,
+      "fingerprint": "e6f1008b4247",
+      "feature_spec": {
+        "numeric_impute": "median",
+        "numeric_scaler": "standard",
+        "categorical_encoding": "onehot",
+        "polynomial_degree": 2,
+        "interaction_only": false,
+        "log_transform_columns": [
+          "lead_time",
+          "adr",
+          "total_of_special_requests"
+        ],
+        "drop_columns": [
+          "reservation_status_date",
+          "agent",
+          "company"
+        ],
+        "variance_threshold": 0.0,
+        "select_k_best": 40
+      },
+      "model_spec": {
+        "algorithm": "mlp",
+        "hyperparameters": {
+          "hidden_layer_sizes": [
+            128,
+            64
+          ],
+          "activation": "relu",
+          "alpha": 1e-05,
+          "learning_rate_init": 0.005,
+          "max_iter": 1000,
+          "early_stopping": true
+        }
+      },
+      "changes": {
+        "feature": {
+          "polynomial_degree": [
+            3,
+            2
+          ],
+          "select_k_best": [
+            50,
+            40
+          ]
+        },
+        "model": {
+          "activation": [
+            "tanh",
+            "relu"
+          ],
+          "alpha": [
+            0.0001,
+            1e-05
+          ],
+          "hidden_layer_sizes": [
+            [
+              256,
+              128,
+              64
+            ],
+            [
+              128,
+              64
+            ]
+          ],
+          "learning_rate_init": [
+            0.001,
+            0.005
+          ],
+          "max_iter": [
+            500,
+            1000
+          ]
+        }
+      },
+      "architecture_code": {
+        "feature": "feature_spec = {'numeric_impute': 'median', 'numeric_scaler': 'standard', 'categorical_encoding': 'onehot', 'polynomial_degree': 2, 'interaction_only': False, 'log_transform_columns': ['lead_time', 'adr', 'total_of_special_requests'], 'drop_columns': ['reservation_status_date', 'agent', 'company'], 'variance_threshold': 0.0, 'select_k_best': 40}",
+        "model": "MLPClassifier(hidden_layer_sizes=(128, 64), activation='relu', alpha=1e-5, learning_rate_init=0.005, max_iter=1000, early_stopping=True)"
+      },
+      "rationales": {
+        "feature": "Reducing select_k_best to 40 to reduce feature dimensionality and potentially improve model performance",
+        "model": "Reducing model complexity by decreasing the number of neurons in the hidden layers and increasing the learning rate to speed up convergence, as suggested by the orchestrator guidance. Also, lowering the L2 penalty to allow the model to fit more."
+      },
+      "status": "ok",
+      "val_score": 0.8381669604075528,
+      "val_std": 0.0019322810286187056,
+      "train_score": 0.8561358959254892,
+      "gap": 0.017968935517936435,
+      "fit_time": 177.07
+    },
+    {
+      "attempt": 5,
+      "fingerprint": "836f82c8fede",
+      "feature_spec": {
+        "numeric_impute": "median",
+        "numeric_scaler": "standard",
+        "categorical_encoding": "onehot",
+        "polynomial_degree": 2,
+        "interaction_only": false,
+        "log_transform_columns": [
+          "lead_time",
+          "adr",
+          "total_of_special_requests"
+        ],
+        "drop_columns": [
+          "reservation_status_date",
+          "agent",
+          "company"
+        ],
+        "variance_threshold": 0.0,
+        "select_k_best": null
+      },
+      "model_spec": {
+        "algorithm": "mlp",
+        "hyperparameters": {
+          "hidden_layer_sizes": [
+            256,
+            256,
+            128
+          ],
+          "activation": "relu",
+          "alpha": 1e-05,
+          "learning_rate_init": 0.0005,
+          "max_iter": 1000,
+          "early_stopping": true
+        }
+      },
+      "changes": {
+        "feature": {
+          "select_k_best": [
+            40,
+            null
+          ]
+        },
+        "model": {
+          "hidden_layer_sizes": [
+            [
+              128,
+              64
+            ],
+            [
+              256,
+              256,
+              128
+            ]
+          ],
+          "learning_rate_init": [
+            0.005,
+            0.0005
+          ]
+        }
+      },
+      "architecture_code": {
+        "feature": "feature_spec = {'numeric_impute': 'median', 'numeric_scaler': 'standard', 'categorical_encoding': 'onehot', 'polynomial_degree': 2, 'interaction_only': False, 'log_transform_columns': ['lead_time','adr','total_of_special_requests'], 'drop_columns': ['reservation_status_date','agent','company'], 'variance_threshold': 0.0, 'select_k_best': None}",
+        "model": "MLPClassifier(hidden_layer_sizes=(256, 256, 128), activation='relu', alpha=1e-05, learning_rate_init=0.0005, max_iter=1000, early_stopping=True)"
+      },
+      "rationales": {
+        "feature": "Retaining the current feature engineering settings and focusing on model capacity and regularization as per the orchestrator's guidance.",
+        "model": "Increased model capacity by expanding hidden layers and reduced regularization for better convergence, as per orchestrator guidance"
+      },
+      "status": "ok",
+      "val_score": 0.8663728126919521,
+      "val_std": 0.0033071911721589417,
+      "train_score": 0.9079514123472168,
+      "gap": 0.04157859965526467,
+      "fit_time": 326.37
+    }
+  ],
+  "final_result": {
+    "metric": "accuracy",
+    "goal": 0.9,
+    "best_attempt": 2,
+    "validation_score": 0.8679642515451658,
+    "final_test_score": 0.875324566546612,
+    "feature_spec": {
+      "numeric_impute": "median",
+      "numeric_scaler": "standard",
+      "categorical_encoding": "onehot",
+      "polynomial_degree": 2,
+      "interaction_only": false,
+      "log_transform_columns": [
+        "lead_time",
+        "adr",
+        "total_of_special_requests"
+      ],
+      "drop_columns": [
+        "reservation_status_date",
+        "agent",
+        "company"
+      ],
+      "variance_threshold": 0.0,
+      "select_k_best": null
+    },
+    "model_spec": {
+      "algorithm": "mlp",
+      "hyperparameters": {
+        "hidden_layer_sizes": [
+          256,
+          128,
+          64
+        ],
+        "activation": "tanh",
+        "alpha": 0.0001,
+        "learning_rate_init": 0.001,
+        "max_iter": 500,
+        "early_stopping": true
+      }
+    },
+    "rounds_used": 5,
+    "stop_reason": "max tries reached (5)"
+  }
+}
